@@ -102,10 +102,11 @@
 
   /* Meetings */
   .meetings { display: flex; flex-direction: column; gap: 10px; }
-  .meeting { border: 1px solid var(--hfk-line); border-radius: 10px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .meeting { border: 1px solid var(--hfk-line); border-radius: 10px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .meeting .info { min-width: 0; }
   .meeting .info .title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
   .meeting .info .sub { font-size: 12.5px; color: var(--muted); }
-  .meeting .link { font-size: 13px; }
+  .meeting .link { font-size: 13px; white-space: nowrap; flex-shrink: 0; }
 
   footer.foot { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--hfk-line); font-size: 12.5px; color: var(--muted); }
 
