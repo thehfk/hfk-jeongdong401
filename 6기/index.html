@@ -492,7 +492,7 @@
 <script>
   const BOARD_API_URL = "https://script.google.com/macros/s/AKfycbxpTiCm51hr29_jqvgyw4HFv9zkL61ei5PoG0c_V0gBgt9Wu318UHQKxPo1r1XmlHMv/exec";
   const REACTIONS = ["👍", "🔥", "💡", "❤️", "🎉"];
-  const LS = { name: "jd401_name", admin: "jd401_admin_secret" };
+  const LS = { name: "jd401_name", admin: "jd401_admin_secret", season: "jd401_season" };
 
   const $ = (id) => document.getElementById(id);
   const statusEl = $("memos-status");
@@ -929,7 +929,6 @@
       const res = await api("create", { name: currentName(), message, season_tag, attachments: state.pendingImages });
       if (!res.ok) throw new Error(res.error || "save failed");
       $("memo-message").value = "";
-      $("memo-season").value = "";
       state.pendingImages = [];
       imgPreview.innerHTML = "";
       await loadMemos();
@@ -984,6 +983,15 @@
   const savedName = getStored(LS.name);
   if (savedName) nameSel.value = savedName;
   refreshIdentityUI();
+
+  // Season tag persistence
+  const seasonSel = $("memo-season");
+  seasonSel.addEventListener("change", () => {
+    if (seasonSel.value) setStored(LS.season, seasonSel.value);
+    else clearStored(LS.season);
+  });
+  const savedSeason = getStored(LS.season);
+  if (savedSeason) seasonSel.value = savedSeason;
 
   // Lightbox
   function openLightbox(url) {
