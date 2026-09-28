@@ -111,6 +111,24 @@
   footer.foot { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--hfk-line); font-size: 12.5px; color: var(--muted); }
 
   /* Board */
+  .board-identity {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 14px 20px; border: 1px solid var(--hfk-line);
+    border-radius: 12px; margin-bottom: 14px;
+    background: rgba(152, 0, 0, 0.03);
+  }
+  .board-identity.empty { border-color: var(--hfk-red); background: rgba(152, 0, 0, 0.06); }
+  .board-identity .label { font-size: 13px; color: var(--muted); }
+  .board-identity #memo-name {
+    font-family: inherit; font-size: 15px; font-weight: 600;
+    color: var(--hfk-charcoal); border: 1px solid var(--hfk-line);
+    background: transparent; padding: 7px 14px; border-radius: 8px;
+    min-width: 140px; cursor: pointer;
+  }
+  .board-identity #memo-name:focus { outline: none; border-color: var(--hfk-red); }
+  .board-identity #memo-name.empty { color: var(--hfk-red); font-weight: 600; }
+  .board-identity .spacer { flex: 1; }
+
   .board-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; flex-wrap: wrap; }
   .season-filters { display: flex; flex-wrap: wrap; gap: 6px; }
   .season-filters button {
@@ -256,6 +274,20 @@
 <section id="board">
   <h2>칠판 <span class="count">아이디어·의견 자유롭게</span></h2>
 
+  <div class="board-identity" id="board-identity">
+    <span class="label">칠판에 참여 중</span>
+    <select id="memo-name">
+      <option value="">이름을 선택해주세요</option>
+      <option value="유주환">유주환</option>
+      <option value="이동형">이동형</option>
+      <option value="남은경">남은경</option>
+      <option value="박지영">박지영</option>
+      <option value="김재윤">김재윤</option>
+    </select>
+    <span class="spacer"></span>
+    <button class="admin-toggle" id="admin-toggle" type="button">관리자</button>
+  </div>
+
   <div class="board-toolbar">
     <div class="season-filters" id="season-filters">
       <button data-season="" class="active">전체</button>
@@ -265,21 +297,11 @@
       <button data-season="여름">여름</button>
       <button data-season="공통">공통</button>
     </div>
-    <button class="admin-toggle" id="admin-toggle" type="button">관리자</button>
   </div>
 
   <div class="board-form">
     <div class="row">
-      <label for="memo-name">이름</label>
-      <select id="memo-name">
-        <option value="">선택</option>
-        <option value="유주환">유주환</option>
-        <option value="이동형">이동형</option>
-        <option value="남은경">남은경</option>
-        <option value="박지영">박지영</option>
-        <option value="김재윤">김재윤</option>
-      </select>
-      <label for="memo-season">계절</label>
+      <label for="memo-season">계절 태그</label>
       <select id="memo-season">
         <option value="">없음</option>
         <option value="가을">가을</option>
@@ -495,6 +517,19 @@
   function currentName() { return nameSel.value.trim(); }
   function currentAdminSecret() { return getStored(LS.admin); }
   function isAdmin() { return !!currentAdminSecret(); }
+  function requireName() {
+    if (currentName()) return true;
+    alert("먼저 상단에서 이름을 선택해 주세요");
+    nameSel.focus();
+    nameSel.scrollIntoView({ behavior: "smooth", block: "center" });
+    return false;
+  }
+  function refreshIdentityUI() {
+    const identityEl = $("board-identity");
+    const empty = !currentName();
+    identityEl.classList.toggle("empty", empty);
+    nameSel.classList.toggle("empty", empty);
+  }
 
   function formatTime(iso) {
     try {
@@ -736,17 +771,6 @@
     const isOpen = state.replyOpenFor === parentId;
     return `
       <div class="reply-form ${isOpen ? "open" : ""}" data-parent="${parentId}">
-        <div class="row" style="margin-top:8px;">
-          <label>이름</label>
-          <select class="reply-name">
-            <option value="">선택</option>
-            <option value="유주환">유주환</option>
-            <option value="이동형">이동형</option>
-            <option value="남은경">남은경</option>
-            <option value="박지영">박지영</option>
-            <option value="김재윤">김재윤</option>
-          </select>
-        </div>
         <textarea class="reply-message" placeholder="답글 남기기…"></textarea>
         <div class="edit-actions">
           <button type="button" class="cancel" data-action="reply-cancel" data-memo="${parentId}">취소</button>
@@ -771,12 +795,11 @@
   function attachHandlers() {
     memosEl.querySelectorAll(".reaction").forEach(el => {
       el.addEventListener("click", async () => {
+        if (!requireName()) return;
         const memoId = el.dataset.memo;
         const emoji = el.dataset.emoji;
-        const me = currentName();
-        if (!me) { alert("이름을 먼저 선택해 주세요"); return; }
         el.disabled = true;
-        const res = await api("react", { id: memoId, name: me, emoji });
+        const res = await api("react", { id: memoId, name: currentName(), emoji });
         el.disabled = false;
         if (!res.ok) { alert("반응 저장 실패: " + res.error); return; }
         const m = findMemo(memoId);
@@ -798,31 +821,23 @@
 
   async function handleAction(action, memoId, el) {
     if (action === "reply") {
+      if (!requireName()) return;
       state.replyOpenFor = state.replyOpenFor === memoId ? null : memoId;
       render();
-      if (state.replyOpenFor) {
-        const form = memosEl.querySelector(`.reply-form[data-parent="${memoId}"]`);
-        if (form) {
-          const sel = form.querySelector(".reply-name");
-          if (sel && currentName()) sel.value = currentName();
-        }
-      }
     } else if (action === "reply-cancel") {
       state.replyOpenFor = null;
       render();
     } else if (action === "reply-submit") {
+      if (!requireName()) return;
       const form = memosEl.querySelector(`.reply-form[data-parent="${memoId}"]`);
-      const name = form.querySelector(".reply-name").value.trim();
       const message = form.querySelector(".reply-message").value.trim();
-      if (!name) { alert("이름을 선택해 주세요"); return; }
       if (!message) { alert("답글 내용을 입력해 주세요"); return; }
       el.disabled = true;
       el.textContent = "저장 중…";
-      const res = await api("create", { name, message, parent_id: memoId });
+      const res = await api("create", { name: currentName(), message, parent_id: memoId });
       el.disabled = false;
       el.textContent = "답글 남기기";
       if (!res.ok) { alert("답글 저장 실패: " + res.error); return; }
-      setStored(LS.name, name);
       state.replyOpenFor = null;
       await loadMemos();
     } else if (action === "edit") {
@@ -865,8 +880,8 @@
     const file = imgInput.files && imgInput.files[0];
     if (!file) return;
     if (file.size > 5 * 1024 * 1024) { alert("이미지 5MB 이하로 올려주세요"); imgInput.value = ""; return; }
+    if (!requireName()) { imgInput.value = ""; return; }
     const name = currentName();
-    if (!name) { alert("이름을 먼저 선택해 주세요"); imgInput.value = ""; return; }
 
     const pillId = "pill-" + Date.now();
     imgPreview.insertAdjacentHTML("beforeend",
@@ -901,22 +916,20 @@
 
   // Submit
   submitBtn.addEventListener("click", async () => {
-    const name = currentName();
+    if (!requireName()) return;
     const message = $("memo-message").value.trim();
     const season_tag = $("memo-season").value.trim();
-    if (!name) { alert("이름을 선택해 주세요"); return; }
     if (!message && state.pendingImages.length === 0) { alert("메모 내용이나 이미지를 넣어 주세요"); return; }
 
     submitBtn.disabled = true;
     submitBtn.textContent = "저장 중…";
     try {
-      const res = await api("create", { name, message, season_tag, attachments: state.pendingImages });
+      const res = await api("create", { name: currentName(), message, season_tag, attachments: state.pendingImages });
       if (!res.ok) throw new Error(res.error || "save failed");
       $("memo-message").value = "";
       $("memo-season").value = "";
       state.pendingImages = [];
       imgPreview.innerHTML = "";
-      setStored(LS.name, name);
       await loadMemos();
     } catch (err) {
       alert("저장 실패: " + err.message);
@@ -962,10 +975,13 @@
   // Name persistence
   nameSel.addEventListener("change", () => {
     if (nameSel.value) setStored(LS.name, nameSel.value);
+    else clearStored(LS.name);
+    refreshIdentityUI();
     render();
   });
   const savedName = getStored(LS.name);
   if (savedName) nameSel.value = savedName;
+  refreshIdentityUI();
 
   // Lightbox
   function openLightbox(url) {
