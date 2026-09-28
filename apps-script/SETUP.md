@@ -1,45 +1,55 @@
 # 6기 칠판(게시판) 백엔드 세팅
 
-Google Sheets + Apps Script로 구성됩니다. 재윤님이 한 번만 세팅하면 되고, 이후 시트에서 직접 수정·삭제 가능합니다.
+Google Sheets + Apps Script 기반. v2에서 답글·이모지 반응·핀·계절 태그·수정·삭제·마크다운·이미지 첨부 지원.
 
-## 1. Google Sheet 만들기
+## 1. Google Sheet 세팅
 
-1. https://sheets.new 에서 새 시트 생성
-2. 파일 이름: `정동401 6기 게시판`
-3. 시트1 A1:D1에 헤더 입력: `timestamp | name | message | id`
+기존 시트에 이어서 컬럼 확장:
 
-## 2. Apps Script 붙이기
+| A | B | C | D | E | F | G | H | I | J | K |
+|---|---|---|---|---|---|---|---|---|---|---|
+| timestamp | name | message | id | parent_id | season_tag | pinned_at | reactions | edited_at | deleted | attachments |
 
-1. 시트에서 **확장 프로그램 → Apps Script** 열기
-2. 프로젝트 이름: `정동401 게시판 API`
-3. `Code.gs` 내용 전부 지우고 [jd401-board.gs](jd401-board.gs) 코드 붙여넣기
-4. 저장 (Ctrl/Cmd+S)
+기존 A~D 그대로 두고 **E1~K1**에 헤더만 채워 넣으면 됩니다. 기존 메모 데이터도 그대로 유지됩니다.
 
-## 3. 웹앱으로 배포
+## 2. Apps Script 코드 갱신
 
-1. 우측 상단 **배포 → 새 배포**
-2. 유형: **웹앱**
-3. 설정:
-   - 설명: `정동401 6기 게시판 v1`
-   - 실행 계정: **본인**
-   - 액세스 권한: **모든 사용자**(Anyone with the link)
-4. **배포** 클릭 → 권한 승인
-5. 발급된 **웹앱 URL** 복사 (예: `https://script.google.com/macros/s/AKfy.../exec`)
+1. Apps Script 프로젝트 열기 (기존 것 그대로)
+2. 코드 전체 지우고 [jd401-board.gs](jd401-board.gs) v2 코드 붙여넣기
+3. 저장
 
-## 4. 대시보드에 URL 연결
+## 3. 스크립트 속성 추가
 
-[6기/index.html](../6기/index.html) 하단 스크립트 블록에서:
+Apps Script 프로젝트 설정(왼쪽 톱니바퀴 아이콘) → **스크립트 속성** → 아래 두 개 추가:
 
-```javascript
-const BOARD_API_URL = ""; // ← 여기에 웹앱 URL 붙여넣기
-```
+- `ADMIN_SECRET` — 재윤님이 핀·관리자 삭제할 때 쓸 비밀번호 (예: `hfkjd401-{임의문자}`)
+- `IMAGE_DRIVE_FOLDER_ID` — 이미지 업로드용 Google Drive 폴더 ID
 
-URL 붙여넣고 저장 → 커밋·푸시하면 GitHub Pages에 반영됩니다.
+### Drive 폴더 준비
 
-## 5. 관리자 삭제 기능 (선택)
+1. https://drive.google.com 에서 새 폴더 생성 (예: `정동401 6기 게시판 이미지`)
+2. 폴더 우클릭 → **공유** → 일반 액세스: **링크가 있는 모든 사용자** · 뷰어
+3. 폴더 열고 URL에서 폴더 ID 추출 (예: `https://drive.google.com/drive/folders/1AbCd...` → `1AbCd...`)
+4. 이 ID를 `IMAGE_DRIVE_FOLDER_ID`에 붙여넣기
 
-시트에서 직접 행 삭제하면 됩니다. 별도 관리자 삭제 API가 필요하면 Apps Script의 **프로젝트 설정 → 스크립트 속성**에 `ADMIN_SECRET` 값 하나 추가 후 그 값으로 delete API 호출 가능합니다.
+## 4. 웹앱 재배포
 
-## 코드 업데이트 시
+1. **배포 → 배포 관리 → 현재 배포 편집**
+2. **새 버전** 선택
+3. **액세스**: 모든 사용자 유지
+4. **배포**
+5. URL은 그대로 유지됩니다 (프론트 수정 불필요)
 
-Apps Script 코드 수정 후에는 **배포 → 배포 관리 → 현재 배포 편집 → 새 버전 선택 → 배포**로 재배포해야 반영됩니다. URL은 유지됩니다.
+## 5. 관리자 모드 사용법 (재윤님)
+
+대시보드 칠판 우측 상단에 **관리자** 링크가 있습니다. 클릭 → `ADMIN_SECRET` 입력 → 메모마다 핀 버튼이 나타납니다. 브라우저에 저장되어 다음에도 유지됩니다.
+
+## 액션 목록
+
+- `list` — GET 또는 `{action:"list"}`
+- `create` — `{name, message, parent_id?, season_tag?, attachments?}`
+- `edit` — `{id, name, message}` (본인만)
+- `delete_own` — `{id, name}` (본인만), 또는 `{id, admin_secret}` (관리자)
+- `react` — `{id, name, emoji}` (토글)
+- `pin` — `{id, admin_secret}` (토글, 관리자만)
+- `upload_image` — `{name, filename, mime, data_base64}` → `{url}`

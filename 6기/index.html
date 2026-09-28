@@ -111,34 +111,119 @@
   footer.foot { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--hfk-line); font-size: 12.5px; color: var(--muted); }
 
   /* Board */
+  .board-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; flex-wrap: wrap; }
+  .season-filters { display: flex; flex-wrap: wrap; gap: 6px; }
+  .season-filters button {
+    font-family: inherit; font-size: 12px; padding: 5px 12px; border-radius: 999px;
+    border: 1px solid var(--hfk-line); background: transparent; color: var(--muted); cursor: pointer;
+  }
+  .season-filters button.active { border-color: var(--hfk-red); color: var(--hfk-red); font-weight: 600; }
+  .admin-toggle { font-size: 12px; color: var(--muted); background: none; border: none; cursor: pointer; padding: 4px 8px; }
+  .admin-toggle.on { color: var(--hfk-red); font-weight: 600; }
+  .admin-toggle:hover { color: var(--hfk-red); }
+
   .board-form { border: 1px solid var(--hfk-line); border-radius: 12px; padding: 20px 22px; margin-bottom: 20px; background: transparent; }
   .board-form .row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
   .board-form label { font-size: 12.5px; color: var(--muted); font-weight: 600; }
-  .board-form select, .board-form textarea {
+  .board-form select, .board-form textarea, .board-form input[type="text"] {
     font-family: inherit; font-size: 14px; color: var(--text);
     border: 1px solid var(--hfk-line); border-radius: 8px;
     background: var(--hfk-cream); padding: 8px 12px;
   }
-  .board-form select { min-width: 140px; }
+  .board-form select { min-width: 130px; }
   .board-form textarea { width: 100%; min-height: 80px; resize: vertical; line-height: 1.6; }
   .board-form textarea:focus, .board-form select:focus { outline: none; border-color: var(--hfk-red); }
-  .board-form .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; gap: 10px; }
+  .board-form .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; gap: 10px; flex-wrap: wrap; }
   .board-form .hint { font-size: 12px; color: var(--muted); }
+  .board-form .actions-right { display: flex; gap: 8px; align-items: center; }
   .board-form button {
     font-family: inherit; font-size: 13.5px; font-weight: 600;
     padding: 8px 18px; border-radius: 8px; border: 1px solid var(--hfk-red);
     background: var(--hfk-red); color: #fff; cursor: pointer;
   }
+  .board-form button.secondary { background: transparent; color: var(--hfk-red); }
   .board-form button:hover { opacity: .88; }
   .board-form button:disabled { opacity: .5; cursor: not-allowed; }
-  .memos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .board-form .image-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted); cursor: pointer; padding: 6px 10px; border: 1px dashed var(--hfk-line); border-radius: 8px; }
+  .board-form .image-btn:hover { color: var(--hfk-red); border-color: var(--hfk-red); }
+  .board-form input[type="file"] { display: none; }
+  .board-form .image-preview { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .board-form .image-preview .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid var(--hfk-line); border-radius: 999px; font-size: 12px; color: var(--muted); }
+  .board-form .image-preview .pill .remove { cursor: pointer; color: var(--hfk-red); font-weight: 700; }
+
+  .memos { display: flex; flex-direction: column; gap: 12px; }
   .memo { border: 1px solid var(--hfk-line); border-radius: 10px; padding: 16px 18px; }
-  .memo .memo-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
-  .memo .memo-name { font-size: 13px; font-weight: 700; color: var(--hfk-charcoal); }
+  .memo.pinned { border-color: var(--hfk-red); }
+  .memo .memo-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; gap: 8px; flex-wrap: wrap; }
+  .memo .memo-head-left { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .memo .memo-name { font-size: 13.5px; font-weight: 700; color: var(--hfk-charcoal); }
   .memo .memo-time { font-size: 11.5px; color: var(--muted); }
-  .memo .memo-body { font-size: 13.5px; line-height: 1.6; color: var(--text); white-space: pre-wrap; word-break: break-word; }
+  .memo .memo-edited { font-size: 11px; color: var(--muted); font-style: italic; }
+  .memo .memo-pin { font-size: 11px; color: var(--hfk-red); font-weight: 700; letter-spacing: .05em; }
+  .memo .season-chip { font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--hfk-line); color: var(--muted); }
+  .memo .memo-body { font-size: 14px; line-height: 1.65; color: var(--text); word-break: break-word; }
+  .memo .memo-body p { margin: 0 0 8px; }
+  .memo .memo-body p:last-child { margin: 0; }
+  .memo .memo-body ul { margin: 4px 0 8px; padding-left: 20px; }
+  .memo .memo-body a { color: var(--hfk-red); text-decoration: underline; border: none; }
+  .memo .memo-body code { background: var(--hfk-cream-light); padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  .memo .memo-body blockquote { border-left: 2px solid var(--hfk-line); margin: 4px 0 8px; padding: 2px 0 2px 10px; color: var(--muted); }
+  .memo .memo-body img { max-width: 100%; max-height: 280px; border-radius: 8px; margin: 6px 0; display: block; }
+  .memo .memo-attachments { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .memo .memo-attachments img { max-width: 200px; max-height: 200px; border-radius: 8px; border: 1px solid var(--hfk-line); cursor: pointer; }
+  .memo .memo-footer { margin-top: 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .memo .reactions { display: flex; gap: 6px; flex-wrap: wrap; }
+  .memo .reaction {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12px; padding: 3px 8px; border-radius: 999px;
+    border: 1px solid var(--hfk-line); background: transparent; cursor: pointer;
+    font-family: inherit; color: var(--muted);
+  }
+  .memo .reaction.mine { border-color: var(--hfk-red); color: var(--hfk-red); background: rgba(152,0,0,.06); }
+  .memo .reaction:hover { border-color: var(--hfk-red); }
+  .memo .reaction .count { font-weight: 600; }
+  .memo .memo-actions { display: flex; gap: 6px; font-size: 12px; }
+  .memo .memo-actions button {
+    background: none; border: none; color: var(--muted); font-size: 12px;
+    cursor: pointer; padding: 2px 4px; font-family: inherit;
+  }
+  .memo .memo-actions button:hover { color: var(--hfk-red); }
+  .memo .memo-actions .danger:hover { color: #b00020; }
+
+  .memo .edit-form { margin-top: 8px; }
+  .memo .edit-form textarea {
+    width: 100%; min-height: 60px; font-family: inherit; font-size: 14px;
+    border: 1px solid var(--hfk-line); border-radius: 8px; background: var(--hfk-cream);
+    padding: 8px 12px; resize: vertical; line-height: 1.6;
+  }
+  .memo .edit-form textarea:focus { outline: none; border-color: var(--hfk-red); }
+  .memo .edit-form .edit-actions { display: flex; gap: 6px; margin-top: 6px; justify-content: flex-end; }
+  .memo .edit-form button {
+    font-family: inherit; font-size: 12.5px; padding: 5px 12px;
+    border-radius: 6px; cursor: pointer;
+  }
+  .memo .edit-form .save { border: 1px solid var(--hfk-red); background: var(--hfk-red); color: #fff; }
+  .memo .edit-form .cancel { border: 1px solid var(--hfk-line); background: transparent; color: var(--muted); }
+
+  .replies { margin-top: 12px; padding-left: 16px; border-left: 2px solid var(--hfk-line); display: flex; flex-direction: column; gap: 10px; }
+  .reply { padding: 10px 14px; border: 1px solid var(--hfk-line); border-radius: 8px; }
+  .reply .memo-body { font-size: 13.5px; }
+  .reply .memo-name { font-size: 13px; }
+
+  .reply-form { margin-top: 10px; display: none; }
+  .reply-form.open { display: block; }
+  .reply-form select { min-width: 110px; }
+  .reply-form textarea { min-height: 50px; }
+
   .memos-empty, .memos-loading, .memos-error { font-size: 13px; color: var(--muted); padding: 16px 0; text-align: center; }
   .memos-error { color: var(--hfk-red); }
+
+  .lightbox {
+    position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 999;
+    display: none; align-items: center; justify-content: center; padding: 20px; cursor: zoom-out;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; }
 
   @media (max-width: 720px) {
     .members, .seasons, .ideas, .memos { grid-template-columns: 1fr; }
@@ -309,6 +394,19 @@
 
 <section id="board">
   <h2>칠판 <span class="count">아이디어·의견 자유롭게</span></h2>
+
+  <div class="board-toolbar">
+    <div class="season-filters" id="season-filters">
+      <button data-season="" class="active">전체</button>
+      <button data-season="가을">가을</button>
+      <button data-season="겨울">겨울</button>
+      <button data-season="봄">봄</button>
+      <button data-season="여름">여름</button>
+      <button data-season="공통">공통</button>
+    </div>
+    <button class="admin-toggle" id="admin-toggle" type="button">관리자</button>
+  </div>
+
   <div class="board-form">
     <div class="row">
       <label for="memo-name">이름</label>
@@ -320,16 +418,35 @@
         <option value="박지영">박지영</option>
         <option value="김재윤">김재윤</option>
       </select>
+      <label for="memo-season">계절</label>
+      <select id="memo-season">
+        <option value="">없음</option>
+        <option value="가을">가을</option>
+        <option value="겨울">겨울</option>
+        <option value="봄">봄</option>
+        <option value="여름">여름</option>
+        <option value="공통">공통</option>
+      </select>
     </div>
-    <textarea id="memo-message" placeholder="아이디어, 질문, 후기, 무엇이든 자유롭게 남겨주세요"></textarea>
+    <textarea id="memo-message" placeholder="아이디어, 질문, 후기 자유롭게. 마크다운 지원 (**볼드**, *이탤릭*, [링크](url), - 리스트, > 인용)"></textarea>
+    <div class="image-preview" id="image-preview"></div>
     <div class="actions">
-      <span class="hint" id="memo-hint">엔터로 줄바꿈, 최대 2000자</span>
-      <button id="memo-submit" type="button">남기기</button>
+      <div class="actions-left">
+        <label for="memo-image" class="image-btn">📎 이미지 첨부</label>
+        <input type="file" id="memo-image" accept="image/*">
+      </div>
+      <div class="actions-right">
+        <span class="hint" id="memo-hint">마크다운 지원, 최대 4000자</span>
+        <button id="memo-submit" type="button">남기기</button>
+      </div>
     </div>
   </div>
+
   <div id="memos" class="memos"></div>
   <div id="memos-status" class="memos-loading">불러오는 중…</div>
 </section>
+
+<div class="lightbox" id="lightbox"><img alt=""></div>
 
 <section id="meetings">
   <h2>회의록 아카이브</h2>
@@ -352,11 +469,34 @@
 
 <script>
   const BOARD_API_URL = "https://script.google.com/macros/s/AKfycbxpTiCm51hr29_jqvgyw4HFv9zkL61ei5PoG0c_V0gBgt9Wu318UHQKxPo1r1XmlHMv/exec";
+  const REACTIONS = ["👍", "🔥", "💡", "❤️", "🎉"];
+  const LS = { name: "jd401_name", admin: "jd401_admin_secret" };
 
   const $ = (id) => document.getElementById(id);
   const statusEl = $("memos-status");
   const memosEl = $("memos");
   const submitBtn = $("memo-submit");
+  const imgInput = $("memo-image");
+  const imgPreview = $("image-preview");
+  const adminBtn = $("admin-toggle");
+  const lightbox = $("lightbox");
+  const nameSel = $("memo-name");
+
+  let state = {
+    memos: [],
+    seasonFilter: "",
+    pendingImages: [],
+    replyOpenFor: null,
+    editOpenFor: null,
+  };
+
+  function getStored(key) { try { return localStorage.getItem(key) || ""; } catch (e) { return ""; } }
+  function setStored(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
+  function clearStored(key) { try { localStorage.removeItem(key); } catch (e) {} }
+
+  function currentName() { return nameSel.value.trim(); }
+  function currentAdminSecret() { return getStored(LS.admin); }
+  function isAdmin() { return !!currentAdminSecret(); }
 
   function formatTime(iso) {
     try {
@@ -376,23 +516,69 @@
     }[c]));
   }
 
-  function renderMemos(memos) {
-    if (!memos.length) {
-      memosEl.innerHTML = "";
-      statusEl.className = "memos-empty";
-      statusEl.textContent = "아직 남긴 메모가 없어요. 첫 메모를 남겨주세요.";
-      return;
+  // Minimal safe markdown renderer.
+  // Order matters. All input escaped first, then inline transformations.
+  function renderMarkdown(src) {
+    const lines = String(src || "").split(/\r?\n/);
+    const out = [];
+    let listBuf = [];
+    let quoteBuf = [];
+    const flushList = () => {
+      if (listBuf.length) {
+        out.push("<ul>" + listBuf.map(x => "<li>" + inlineMd(x) + "</li>").join("") + "</ul>");
+        listBuf = [];
+      }
+    };
+    const flushQuote = () => {
+      if (quoteBuf.length) {
+        out.push("<blockquote>" + inlineMd(quoteBuf.join("\n")).replace(/\n/g, "<br>") + "</blockquote>");
+        quoteBuf = [];
+      }
+    };
+    const flushAll = () => { flushList(); flushQuote(); };
+
+    for (const raw of lines) {
+      const line = raw;
+      if (/^\s*[-*]\s+/.test(line)) {
+        flushQuote();
+        listBuf.push(line.replace(/^\s*[-*]\s+/, ""));
+      } else if (/^\s*>\s?/.test(line)) {
+        flushList();
+        quoteBuf.push(line.replace(/^\s*>\s?/, ""));
+      } else if (line.trim() === "") {
+        flushAll();
+      } else {
+        flushAll();
+        out.push("<p>" + inlineMd(line) + "</p>");
+      }
     }
-    statusEl.textContent = "";
-    memosEl.innerHTML = memos.map(m => `
-      <div class="memo">
-        <div class="memo-head">
-          <div class="memo-name">${escapeHtml(m.name)}</div>
-          <div class="memo-time">${formatTime(m.timestamp)}</div>
-        </div>
-        <div class="memo-body">${escapeHtml(m.message)}</div>
-      </div>
-    `).join("");
+    flushAll();
+    return out.join("");
+  }
+
+  function inlineMd(s) {
+    let t = escapeHtml(s);
+    // code `x`
+    t = t.replace(/`([^`]+)`/g, (_, c) => "<code>" + c + "</code>");
+    // bold **x** or __x__
+    t = t.replace(/(\*\*|__)([^*_\n]+)\1/g, (_, __, c) => "<strong>" + c + "</strong>");
+    // italic *x* or _x_
+    t = t.replace(/(?<![*\w])\*([^*\n]+)\*(?!\w)/g, (_, c) => "<em>" + c + "</em>");
+    t = t.replace(/(?<![_\w])_([^_\n]+)_(?!\w)/g, (_, c) => "<em>" + c + "</em>");
+    // link [text](url) - only http(s)
+    t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_, txt, url) =>
+      '<a href="' + url + '" target="_blank" rel="noopener">' + txt + "</a>");
+    // bare URL
+    t = t.replace(/(^|[\s(])(https?:\/\/[^\s<]+)/g, (_, pre, url) =>
+      pre + '<a href="' + url + '" target="_blank" rel="noopener">' + url + "</a>");
+    return t;
+  }
+
+  // API helper
+  async function api(action, payload) {
+    const body = Object.assign({ action }, payload || {});
+    const res = await fetch(BOARD_API_URL, { method: "POST", body: JSON.stringify(body) });
+    return await res.json();
   }
 
   async function loadMemos() {
@@ -407,30 +593,332 @@
       const res = await fetch(BOARD_API_URL);
       const data = await res.json();
       if (!data.ok) throw new Error(data.error || "load failed");
-      renderMemos(data.memos || []);
+      state.memos = data.memos || [];
+      render();
     } catch (err) {
       statusEl.className = "memos-error";
       statusEl.textContent = "메모를 불러오지 못했습니다: " + err.message;
     }
   }
 
-  async function submitMemo() {
-    const name = $("memo-name").value.trim();
+  function render() {
+    const all = state.memos.slice();
+    const topLevel = all.filter(m => !m.parent_id);
+    const repliesByParent = {};
+    for (const m of all) {
+      if (m.parent_id) {
+        (repliesByParent[m.parent_id] = repliesByParent[m.parent_id] || []).push(m);
+      }
+    }
+    for (const k in repliesByParent) {
+      repliesByParent[k].sort((a, b) => (a.timestamp || "").localeCompare(b.timestamp || ""));
+    }
+
+    let visible = topLevel;
+    if (state.seasonFilter) {
+      visible = visible.filter(m => m.season_tag === state.seasonFilter);
+    }
+
+    // Sort: pinned first (by pinned_at desc), then by timestamp desc
+    visible.sort((a, b) => {
+      const pa = !!a.pinned_at, pb = !!b.pinned_at;
+      if (pa !== pb) return pa ? -1 : 1;
+      if (pa && pb) return (b.pinned_at || "").localeCompare(a.pinned_at || "");
+      return (b.timestamp || "").localeCompare(a.timestamp || "");
+    });
+
+    if (!visible.length) {
+      memosEl.innerHTML = "";
+      statusEl.className = "memos-empty";
+      statusEl.textContent = state.seasonFilter
+        ? `${state.seasonFilter} 관련 메모가 아직 없어요.`
+        : "아직 남긴 메모가 없어요. 첫 메모를 남겨주세요.";
+      return;
+    }
+    statusEl.textContent = "";
+    memosEl.innerHTML = visible.map(m => renderMemo(m, repliesByParent[m.id] || [])).join("");
+    attachHandlers();
+  }
+
+  function renderMemo(m, replies) {
+    const pinBadge = m.pinned_at ? '<span class="memo-pin">📌 PINNED</span>' : "";
+    const seasonChip = m.season_tag ? `<span class="season-chip">${escapeHtml(m.season_tag)}</span>` : "";
+    const editedNote = m.edited_at ? '<span class="memo-edited">(수정됨)</span>' : "";
+    const attachments = (m.attachments || []).map(url =>
+      `<img src="${escapeHtml(url)}" class="attachment-img" data-full="${escapeHtml(url)}" alt="첨부 이미지">`
+    ).join("");
+    const reactionsHtml = renderReactions(m);
+    const actionsHtml = renderActions(m, false);
+    const editForm = state.editOpenFor === m.id ? renderEditForm(m) : "";
+    const replyForm = renderReplyForm(m.id);
+    const repliesHtml = replies.length ? `<div class="replies">${replies.map(r => renderReply(r)).join("")}</div>` : "";
+
+    return `
+      <div class="memo ${m.pinned_at ? "pinned" : ""}" data-id="${m.id}">
+        <div class="memo-head">
+          <div class="memo-head-left">
+            <span class="memo-name">${escapeHtml(m.name)}</span>
+            <span class="memo-time">${formatTime(m.timestamp)}</span>
+            ${editedNote}
+            ${seasonChip}
+          </div>
+          ${pinBadge}
+        </div>
+        ${state.editOpenFor === m.id ? editForm : `<div class="memo-body">${renderMarkdown(m.message)}</div>`}
+        ${attachments ? `<div class="memo-attachments">${attachments}</div>` : ""}
+        <div class="memo-footer">
+          <div class="reactions">${reactionsHtml}</div>
+          <div class="memo-actions">${actionsHtml}</div>
+        </div>
+        ${replyForm}
+        ${repliesHtml}
+      </div>
+    `;
+  }
+
+  function renderReply(m) {
+    const editedNote = m.edited_at ? '<span class="memo-edited">(수정됨)</span>' : "";
+    const attachments = (m.attachments || []).map(url =>
+      `<img src="${escapeHtml(url)}" class="attachment-img" data-full="${escapeHtml(url)}" alt="첨부 이미지">`
+    ).join("");
+    const reactionsHtml = renderReactions(m);
+    const actionsHtml = renderActions(m, true);
+    const editForm = state.editOpenFor === m.id ? renderEditForm(m) : "";
+
+    return `
+      <div class="reply" data-id="${m.id}">
+        <div class="memo-head">
+          <div class="memo-head-left">
+            <span class="memo-name">${escapeHtml(m.name)}</span>
+            <span class="memo-time">${formatTime(m.timestamp)}</span>
+            ${editedNote}
+          </div>
+        </div>
+        ${state.editOpenFor === m.id ? editForm : `<div class="memo-body">${renderMarkdown(m.message)}</div>`}
+        ${attachments ? `<div class="memo-attachments">${attachments}</div>` : ""}
+        <div class="memo-footer">
+          <div class="reactions">${reactionsHtml}</div>
+          <div class="memo-actions">${actionsHtml}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderReactions(m) {
+    const me = currentName();
+    return REACTIONS.map(emoji => {
+      const users = (m.reactions && m.reactions[emoji]) || [];
+      const mine = me && users.indexOf(me) >= 0;
+      const count = users.length;
+      const cls = "reaction" + (mine ? " mine" : "");
+      const countHtml = count > 0 ? `<span class="count">${count}</span>` : "";
+      const title = users.length ? users.join(", ") : "";
+      return `<button class="${cls}" data-emoji="${emoji}" data-memo="${m.id}" title="${escapeHtml(title)}" type="button">${emoji}${countHtml}</button>`;
+    }).join("");
+  }
+
+  function renderActions(m, isReply) {
+    const me = currentName();
+    const isMine = me && me === m.name;
+    const parts = [];
+    if (!isReply) parts.push(`<button type="button" data-action="reply" data-memo="${m.id}">답글</button>`);
+    if (isMine) {
+      parts.push(`<button type="button" data-action="edit" data-memo="${m.id}">수정</button>`);
+      parts.push(`<button type="button" class="danger" data-action="delete" data-memo="${m.id}">삭제</button>`);
+    } else if (isAdmin()) {
+      parts.push(`<button type="button" class="danger" data-action="delete-admin" data-memo="${m.id}">삭제</button>`);
+    }
+    if (!isReply && isAdmin()) {
+      parts.push(`<button type="button" data-action="pin" data-memo="${m.id}">${m.pinned_at ? "핀 해제" : "핀"}</button>`);
+    }
+    return parts.join("");
+  }
+
+  function renderReplyForm(parentId) {
+    const isOpen = state.replyOpenFor === parentId;
+    return `
+      <div class="reply-form ${isOpen ? "open" : ""}" data-parent="${parentId}">
+        <div class="row" style="margin-top:8px;">
+          <label>이름</label>
+          <select class="reply-name">
+            <option value="">선택</option>
+            <option value="유주환">유주환</option>
+            <option value="이동형">이동형</option>
+            <option value="남은경">남은경</option>
+            <option value="박지영">박지영</option>
+            <option value="김재윤">김재윤</option>
+          </select>
+        </div>
+        <textarea class="reply-message" placeholder="답글 남기기…"></textarea>
+        <div class="edit-actions">
+          <button type="button" class="cancel" data-action="reply-cancel" data-memo="${parentId}">취소</button>
+          <button type="button" class="save" data-action="reply-submit" data-memo="${parentId}">답글 남기기</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderEditForm(m) {
+    return `
+      <div class="edit-form">
+        <textarea class="edit-message">${escapeHtml(m.message)}</textarea>
+        <div class="edit-actions">
+          <button type="button" class="cancel" data-action="edit-cancel" data-memo="${m.id}">취소</button>
+          <button type="button" class="save" data-action="edit-submit" data-memo="${m.id}">저장</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function attachHandlers() {
+    memosEl.querySelectorAll(".reaction").forEach(el => {
+      el.addEventListener("click", async () => {
+        const memoId = el.dataset.memo;
+        const emoji = el.dataset.emoji;
+        const me = currentName();
+        if (!me) { alert("이름을 먼저 선택해 주세요"); return; }
+        el.disabled = true;
+        const res = await api("react", { id: memoId, name: me, emoji });
+        el.disabled = false;
+        if (!res.ok) { alert("반응 저장 실패: " + res.error); return; }
+        const m = findMemo(memoId);
+        if (m) m.reactions = res.reactions;
+        render();
+      });
+    });
+
+    memosEl.querySelectorAll("[data-action]").forEach(el => {
+      el.addEventListener("click", () => handleAction(el.dataset.action, el.dataset.memo, el));
+    });
+
+    memosEl.querySelectorAll(".attachment-img").forEach(el => {
+      el.addEventListener("click", () => openLightbox(el.dataset.full));
+    });
+  }
+
+  function findMemo(id) { return state.memos.find(m => m.id === id); }
+
+  async function handleAction(action, memoId, el) {
+    if (action === "reply") {
+      state.replyOpenFor = state.replyOpenFor === memoId ? null : memoId;
+      render();
+      if (state.replyOpenFor) {
+        const form = memosEl.querySelector(`.reply-form[data-parent="${memoId}"]`);
+        if (form) {
+          const sel = form.querySelector(".reply-name");
+          if (sel && currentName()) sel.value = currentName();
+        }
+      }
+    } else if (action === "reply-cancel") {
+      state.replyOpenFor = null;
+      render();
+    } else if (action === "reply-submit") {
+      const form = memosEl.querySelector(`.reply-form[data-parent="${memoId}"]`);
+      const name = form.querySelector(".reply-name").value.trim();
+      const message = form.querySelector(".reply-message").value.trim();
+      if (!name) { alert("이름을 선택해 주세요"); return; }
+      if (!message) { alert("답글 내용을 입력해 주세요"); return; }
+      el.disabled = true;
+      el.textContent = "저장 중…";
+      const res = await api("create", { name, message, parent_id: memoId });
+      el.disabled = false;
+      el.textContent = "답글 남기기";
+      if (!res.ok) { alert("답글 저장 실패: " + res.error); return; }
+      setStored(LS.name, name);
+      state.replyOpenFor = null;
+      await loadMemos();
+    } else if (action === "edit") {
+      state.editOpenFor = state.editOpenFor === memoId ? null : memoId;
+      render();
+    } else if (action === "edit-cancel") {
+      state.editOpenFor = null;
+      render();
+    } else if (action === "edit-submit") {
+      const memo = findMemo(memoId);
+      const form = memosEl.querySelector(`.memo[data-id="${memoId}"] .edit-form, .reply[data-id="${memoId}"] .edit-form`);
+      const message = form.querySelector(".edit-message").value.trim();
+      if (!message) { alert("내용을 입력해 주세요"); return; }
+      el.disabled = true;
+      const res = await api("edit", { id: memoId, name: memo.name, message });
+      el.disabled = false;
+      if (!res.ok) { alert("수정 실패: " + res.error); return; }
+      state.editOpenFor = null;
+      await loadMemos();
+    } else if (action === "delete") {
+      const memo = findMemo(memoId);
+      if (!confirm("이 메모를 삭제할까요?")) return;
+      const res = await api("delete_own", { id: memoId, name: memo.name });
+      if (!res.ok) { alert("삭제 실패: " + res.error); return; }
+      await loadMemos();
+    } else if (action === "delete-admin") {
+      if (!confirm("(관리자) 이 메모를 삭제할까요?")) return;
+      const res = await api("delete_own", { id: memoId, admin_secret: currentAdminSecret() });
+      if (!res.ok) { alert("삭제 실패: " + res.error); return; }
+      await loadMemos();
+    } else if (action === "pin") {
+      const res = await api("pin", { id: memoId, admin_secret: currentAdminSecret() });
+      if (!res.ok) { alert("핀 실패: " + res.error); return; }
+      await loadMemos();
+    }
+  }
+
+  // Image upload
+  imgInput.addEventListener("change", async () => {
+    const file = imgInput.files && imgInput.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { alert("이미지 5MB 이하로 올려주세요"); imgInput.value = ""; return; }
+    const name = currentName();
+    if (!name) { alert("이름을 먼저 선택해 주세요"); imgInput.value = ""; return; }
+
+    const pillId = "pill-" + Date.now();
+    imgPreview.insertAdjacentHTML("beforeend",
+      `<span class="pill" id="${pillId}">${escapeHtml(file.name)} 업로드 중…</span>`);
+    try {
+      const dataUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+      const base64 = String(dataUrl).split(",")[1];
+      const res = await api("upload_image", {
+        name, filename: file.name, mime: file.type || "image/png", data_base64: base64,
+      });
+      if (!res.ok) throw new Error(res.error || "upload failed");
+      state.pendingImages.push(res.url);
+      const pill = document.getElementById(pillId);
+      pill.innerHTML = `${escapeHtml(file.name)} <span class="remove" data-url="${escapeHtml(res.url)}">×</span>`;
+      pill.querySelector(".remove").addEventListener("click", (e) => {
+        const url = e.target.dataset.url;
+        state.pendingImages = state.pendingImages.filter(u => u !== url);
+        pill.remove();
+      });
+    } catch (err) {
+      const pill = document.getElementById(pillId);
+      if (pill) pill.textContent = "업로드 실패: " + err.message;
+    } finally {
+      imgInput.value = "";
+    }
+  });
+
+  // Submit
+  submitBtn.addEventListener("click", async () => {
+    const name = currentName();
     const message = $("memo-message").value.trim();
+    const season_tag = $("memo-season").value.trim();
     if (!name) { alert("이름을 선택해 주세요"); return; }
-    if (!message) { alert("메모 내용을 입력해 주세요"); return; }
-    if (!BOARD_API_URL) { alert("게시판 백엔드가 아직 연결되지 않았습니다"); return; }
+    if (!message && state.pendingImages.length === 0) { alert("메모 내용이나 이미지를 넣어 주세요"); return; }
 
     submitBtn.disabled = true;
     submitBtn.textContent = "저장 중…";
     try {
-      const res = await fetch(BOARD_API_URL, {
-        method: "POST",
-        body: JSON.stringify({ action: "create", name, message }),
-      });
-      const data = await res.json();
-      if (!data.ok) throw new Error(data.error || "save failed");
+      const res = await api("create", { name, message, season_tag, attachments: state.pendingImages });
+      if (!res.ok) throw new Error(res.error || "save failed");
       $("memo-message").value = "";
+      $("memo-season").value = "";
+      state.pendingImages = [];
+      imgPreview.innerHTML = "";
+      setStored(LS.name, name);
       await loadMemos();
     } catch (err) {
       alert("저장 실패: " + err.message);
@@ -438,9 +926,57 @@
       submitBtn.disabled = false;
       submitBtn.textContent = "남기기";
     }
-  }
+  });
 
-  submitBtn.addEventListener("click", submitMemo);
+  // Season filters
+  $("season-filters").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-season]");
+    if (!btn) return;
+    state.seasonFilter = btn.dataset.season;
+    $("season-filters").querySelectorAll("button").forEach(b => {
+      b.classList.toggle("active", b.dataset.season === state.seasonFilter);
+    });
+    render();
+  });
+
+  // Admin toggle
+  function refreshAdminUI() {
+    adminBtn.classList.toggle("on", isAdmin());
+    adminBtn.textContent = isAdmin() ? "관리자 (해제)" : "관리자";
+  }
+  adminBtn.addEventListener("click", () => {
+    if (isAdmin()) {
+      if (confirm("관리자 모드를 해제할까요?")) {
+        clearStored(LS.admin);
+        refreshAdminUI();
+        render();
+      }
+    } else {
+      const secret = prompt("관리자 비밀번호를 입력하세요");
+      if (secret) {
+        setStored(LS.admin, secret.trim());
+        refreshAdminUI();
+        render();
+      }
+    }
+  });
+
+  // Name persistence
+  nameSel.addEventListener("change", () => {
+    if (nameSel.value) setStored(LS.name, nameSel.value);
+    render();
+  });
+  const savedName = getStored(LS.name);
+  if (savedName) nameSel.value = savedName;
+
+  // Lightbox
+  function openLightbox(url) {
+    lightbox.querySelector("img").src = url;
+    lightbox.classList.add("open");
+  }
+  lightbox.addEventListener("click", () => lightbox.classList.remove("open"));
+
+  refreshAdminUI();
   loadMemos();
 </script>
 
