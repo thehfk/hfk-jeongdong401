@@ -492,7 +492,7 @@
 <script>
   const BOARD_API_URL = "https://script.google.com/macros/s/AKfycbxpTiCm51hr29_jqvgyw4HFv9zkL61ei5PoG0c_V0gBgt9Wu318UHQKxPo1r1XmlHMv/exec";
   const REACTIONS = ["👍", "🔥", "💡", "❤️", "🎉"];
-  const LS = { name: "jd401_name", admin: "jd401_admin_secret", season: "jd401_season" };
+  const LS = { name: "jd401_name", admin: "jd401_admin_secret", season: "jd401_season", filter: "jd401_filter" };
 
   const $ = (id) => document.getElementById(id);
   const statusEl = $("memos-status");
@@ -941,15 +941,22 @@
   });
 
   // Season filters
-  $("season-filters").addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-season]");
-    if (!btn) return;
-    state.seasonFilter = btn.dataset.season;
+  function applySeasonFilter(value) {
+    state.seasonFilter = value;
+    if (value) setStored(LS.filter, value);
+    else clearStored(LS.filter);
     $("season-filters").querySelectorAll("button").forEach(b => {
       b.classList.toggle("active", b.dataset.season === state.seasonFilter);
     });
     render();
+  }
+  $("season-filters").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-season]");
+    if (!btn) return;
+    applySeasonFilter(btn.dataset.season);
   });
+  const savedFilter = getStored(LS.filter);
+  if (savedFilter) applySeasonFilter(savedFilter);
 
   // Admin toggle
   function refreshAdminUI() {
