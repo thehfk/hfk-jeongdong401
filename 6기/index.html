@@ -246,49 +246,65 @@
 </header>
 
 <nav class="toc">
-  <a href="#members">멤버 프로필</a>
+  <a href="#board">칠판</a>
   <a href="#seasons">계절별 이벤트</a>
   <a href="#ideas">아이디어 풀</a>
-  <a href="#board">칠판</a>
+  <a href="#members">멤버 프로필</a>
   <a href="#meetings">회의록</a>
 </nav>
 
-<section id="members">
-  <h2>멤버 프로필 <span class="count">4명</span></h2>
-  <div class="members">
-    <div class="member">
-      <div class="head">
-        <div class="name">유주환</div>
-        <div class="season">겨울 PM</div>
-      </div>
-      <div class="role">CJ대한통운 재직 + 서강대 기술경영 박사과정</div>
-      <div class="motive">이성·T 중심의 일상에서 잊혀지고 있는 직관과 감성을 되찾고 싶어 참여. 아이디어를 내고 실현하는 역할을 좋아함. 관심 주제는 아날로그(필름 카메라·LP·카세트)</div>
+<section id="board">
+  <h2>칠판 <span class="count">아이디어·의견 자유롭게</span></h2>
+
+  <div class="board-toolbar">
+    <div class="season-filters" id="season-filters">
+      <button data-season="" class="active">전체</button>
+      <button data-season="가을">가을</button>
+      <button data-season="겨울">겨울</button>
+      <button data-season="봄">봄</button>
+      <button data-season="여름">여름</button>
+      <button data-season="공통">공통</button>
     </div>
-    <div class="member">
-      <div class="head">
-        <div class="name">이동형</div>
-        <div class="season">여름 PM</div>
-      </div>
-      <div class="role">스탠리 텀블러 한국법인 브랜드 마케팅</div>
-      <div class="motive">회사 밖에서 새로운 사람들과 팀 프로젝트를 해보고 싶어 참여. 공간 기반 오프라인 커뮤니티에 관심. 대학 때 이벤트 전공, 두바이 5년 근무 경력</div>
+    <button class="admin-toggle" id="admin-toggle" type="button">관리자</button>
+  </div>
+
+  <div class="board-form">
+    <div class="row">
+      <label for="memo-name">이름</label>
+      <select id="memo-name">
+        <option value="">선택</option>
+        <option value="유주환">유주환</option>
+        <option value="이동형">이동형</option>
+        <option value="남은경">남은경</option>
+        <option value="박지영">박지영</option>
+        <option value="김재윤">김재윤</option>
+      </select>
+      <label for="memo-season">계절</label>
+      <select id="memo-season">
+        <option value="">없음</option>
+        <option value="가을">가을</option>
+        <option value="겨울">겨울</option>
+        <option value="봄">봄</option>
+        <option value="여름">여름</option>
+        <option value="공통">공통</option>
+      </select>
     </div>
-    <div class="member">
-      <div class="head">
-        <div class="name">남은경</div>
-        <div class="season">가을 PM</div>
+    <textarea id="memo-message" placeholder="아이디어, 질문, 후기 자유롭게. 마크다운 지원 (**볼드**, *이탤릭*, [링크](url), - 리스트, > 인용)"></textarea>
+    <div class="image-preview" id="image-preview"></div>
+    <div class="actions">
+      <div class="actions-left">
+        <label for="memo-image" class="image-btn">📎 이미지 첨부</label>
+        <input type="file" id="memo-image" accept="image/*">
       </div>
-      <div class="role">이엠인피니 경영기획</div>
-      <div class="motive">마이시크릿덴 애호가로 최근 6회 이상 방문. 회사 사무실 이전을 앞두고 공간 기획에 호기심. 살롱 느낌에 매력을 느껴 참여</div>
-    </div>
-    <div class="member">
-      <div class="head">
-        <div class="name">박지영</div>
-        <div class="season">봄 PM</div>
+      <div class="actions-right">
+        <span class="hint" id="memo-hint">마크다운 지원, 최대 4000자</span>
+        <button id="memo-submit" type="button">남기기</button>
       </div>
-      <div class="role">DL이앤씨 경영기획 · 장학재단 운영</div>
-      <div class="motive">4기·5기 이수 후 세 번째 참여. 5기에서는 10명 10주제 에세이집 출간. 회사 홍보 24년 경력, 이번 6기에서는 소수 정예 방식에 기대</div>
     </div>
   </div>
+
+  <div id="memos" class="memos"></div>
+  <div id="memos-status" class="memos-loading">불러오는 중…</div>
 </section>
 
 <section id="seasons">
@@ -392,61 +408,43 @@
   </div>
 </section>
 
-<section id="board">
-  <h2>칠판 <span class="count">아이디어·의견 자유롭게</span></h2>
-
-  <div class="board-toolbar">
-    <div class="season-filters" id="season-filters">
-      <button data-season="" class="active">전체</button>
-      <button data-season="가을">가을</button>
-      <button data-season="겨울">겨울</button>
-      <button data-season="봄">봄</button>
-      <button data-season="여름">여름</button>
-      <button data-season="공통">공통</button>
-    </div>
-    <button class="admin-toggle" id="admin-toggle" type="button">관리자</button>
-  </div>
-
-  <div class="board-form">
-    <div class="row">
-      <label for="memo-name">이름</label>
-      <select id="memo-name">
-        <option value="">선택</option>
-        <option value="유주환">유주환</option>
-        <option value="이동형">이동형</option>
-        <option value="남은경">남은경</option>
-        <option value="박지영">박지영</option>
-        <option value="김재윤">김재윤</option>
-      </select>
-      <label for="memo-season">계절</label>
-      <select id="memo-season">
-        <option value="">없음</option>
-        <option value="가을">가을</option>
-        <option value="겨울">겨울</option>
-        <option value="봄">봄</option>
-        <option value="여름">여름</option>
-        <option value="공통">공통</option>
-      </select>
-    </div>
-    <textarea id="memo-message" placeholder="아이디어, 질문, 후기 자유롭게. 마크다운 지원 (**볼드**, *이탤릭*, [링크](url), - 리스트, > 인용)"></textarea>
-    <div class="image-preview" id="image-preview"></div>
-    <div class="actions">
-      <div class="actions-left">
-        <label for="memo-image" class="image-btn">📎 이미지 첨부</label>
-        <input type="file" id="memo-image" accept="image/*">
+<section id="members">
+  <h2>멤버 프로필 <span class="count">4명</span></h2>
+  <div class="members">
+    <div class="member">
+      <div class="head">
+        <div class="name">유주환</div>
+        <div class="season">겨울 PM</div>
       </div>
-      <div class="actions-right">
-        <span class="hint" id="memo-hint">마크다운 지원, 최대 4000자</span>
-        <button id="memo-submit" type="button">남기기</button>
+      <div class="role">CJ대한통운 재직 + 서강대 기술경영 박사과정</div>
+      <div class="motive">이성·T 중심의 일상에서 잊혀지고 있는 직관과 감성을 되찾고 싶어 참여. 아이디어를 내고 실현하는 역할을 좋아함. 관심 주제는 아날로그(필름 카메라·LP·카세트)</div>
+    </div>
+    <div class="member">
+      <div class="head">
+        <div class="name">이동형</div>
+        <div class="season">여름 PM</div>
       </div>
+      <div class="role">스탠리 텀블러 한국법인 브랜드 마케팅</div>
+      <div class="motive">회사 밖에서 새로운 사람들과 팀 프로젝트를 해보고 싶어 참여. 공간 기반 오프라인 커뮤니티에 관심. 대학 때 이벤트 전공, 두바이 5년 근무 경력</div>
+    </div>
+    <div class="member">
+      <div class="head">
+        <div class="name">남은경</div>
+        <div class="season">가을 PM</div>
+      </div>
+      <div class="role">이엠인피니 경영기획</div>
+      <div class="motive">마이시크릿덴 애호가로 최근 6회 이상 방문. 회사 사무실 이전을 앞두고 공간 기획에 호기심. 살롱 느낌에 매력을 느껴 참여</div>
+    </div>
+    <div class="member">
+      <div class="head">
+        <div class="name">박지영</div>
+        <div class="season">봄 PM</div>
+      </div>
+      <div class="role">DL이앤씨 경영기획 · 장학재단 운영</div>
+      <div class="motive">4기·5기 이수 후 세 번째 참여. 5기에서는 10명 10주제 에세이집 출간. 회사 홍보 24년 경력, 이번 6기에서는 소수 정예 방식에 기대</div>
     </div>
   </div>
-
-  <div id="memos" class="memos"></div>
-  <div id="memos-status" class="memos-loading">불러오는 중…</div>
 </section>
-
-<div class="lightbox" id="lightbox"><img alt=""></div>
 
 <section id="meetings">
   <h2>회의록 아카이브</h2>
